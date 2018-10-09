@@ -1,0 +1,83 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: user
+ * Date: 16-06-2017
+ * Time: 16:21
+ */
+
+/**
+ * @param string $fileType type of the file
+ * @param string $fileName filename, from which we will
+ *                     find out the file extension.
+ *
+ * @return bool|mixed
+ * @imp Add more file formats here...
+ *
+ * Receives the name of the image and then find its extension.
+ * if the extension is allowed , returns the extension itself.
+ * returns FALSE otherwise.
+ *
+ * Make this function compatible to receive an array where we
+ * are not sure about the file type. This will happen in such
+ * a situation where we are providing an input file field and
+ * the user can upload any kind of file.
+ */
+
+function is_validFile($fileType, $fileName)
+{
+    // checking if the type of the file is a valid one
+
+    $fileTypes = array('img','vid','aud','doc');
+    try
+    {
+        if (!in_array($fileType, $fileTypes))
+        {
+            throw new Exception('Unknown file type passed in !');
+        }
+        goto label;
+    }
+    catch (Exception $e)
+    {
+        die($e->getMessage());
+    }
+
+    // if the type of the file is a valid one, we will process it
+
+    label:
+
+    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+    $allowed = array(
+        'img' => array('jpg','jpeg','png'),
+        'vid' => array('mp4','3gp','wmv','flv'),
+        'aud' => array('mp3','wav','aac','wma'),
+        'doc' => array('doc','docx','pdf','ppt')
+    );
+
+    if (in_array($ext, $allowed[$fileType]))
+    {
+        return $ext;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
+ * @param string $prefix string to be prefixed
+ * @param string $affix string to be affixed
+ * @param string $ext file extension
+ * @return string filename
+ */
+
+function naming($prefix, $affix, $ext)
+{
+    $prefix = strtolower($prefix);
+    $affix = strtolower($affix);
+    $ext = strtolower($ext);
+    $filename = $prefix.uniqid('_winstra_').$affix.'.'.$ext;
+    $filename = str_replace(' ', '', $filename);
+    return $filename;
+}

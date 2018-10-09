@@ -5,12 +5,13 @@
  * Date: 30-10-2017
  * Time: 13:40
  * @author: iamRahul1973.github.io
- * @package: DB_Crud
+ * @package: My_Repo
+ * @lib: db_crud
  */
 
 use mysqli;
 
-class Database
+class DB_Crud
 {
     /**
      * @var object mysqli $db
